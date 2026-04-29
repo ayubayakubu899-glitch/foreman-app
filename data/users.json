@@ -1,0 +1,42 @@
+[
+  {
+    "id": "1765230190591",
+    "username": "donyaks",
+    "email": "ayubayakubu99@gmail.com",
+    "phone": "+2348083379845",
+    "password": "Yaksboy1",
+    "category": "contractor",
+    "createdAt": "2025-12-08T21:43:10.592Z"
+  },
+  {
+    "id": "1765290742531",
+    "username": "Yaks",
+    "email": "ayubayakubu899@gmail.com",
+    "phone": "+2348143857866",
+    "password": "Yaksboy1",
+    "category": "foreman",
+    "createdAt": "2025-12-09T14:32:22.531Z",
+    "location": "Abuja",
+    "bio": ""
+  },
+  {
+    "id": "1765347112080",
+    "username": "Myself",
+    "email": "ayubayakubu990@gmail.com",
+    "phone": "08118786062",
+    "password": "Yaksboy1",
+    "category": "foreman",
+    "location": "Lagos",
+    "createdAt": "2025-12-10T06:11:52.080Z"
+  },
+  {
+    "id": "1765366007371",
+    "username": "cous",
+    "email": "ammarlut@gmail.com",
+    "phone": "+234-7063066069",
+    "password": "Ammarlut",
+    "category": "contractor",
+    "location": null,
+    "createdAt": "2025-12-10T11:26:47.371Z"
+  }
+]

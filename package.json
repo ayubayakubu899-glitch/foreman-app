@@ -1,0 +1,19 @@
+{
+  "name": "foreman-user-app",
+  "version": "1.0.0",
+  "description": "Google Earth collaboration platform",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "@google/earthengine": "^0.1.0",
+    "ejs": "^3.1.9",
+    "body-parser": "^1.20.2",
+    "dotenv": "^16.3.1",
+    "bcrypt": "^5.1.1",
+    "jsonwebtoken": "^9.0.2",
+    "socket.io": "^4.7.2"
+  }
+}

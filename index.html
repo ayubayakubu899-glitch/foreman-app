@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Foreman Collaboration Platform</title>
+  <style>
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg,#667eea 0%,#764ba2 100%); color:#fff; min-height:100vh; display:flex; align-items:center; justify-content:center; }
+    .card { background: rgba(255,255,255,0.06); padding:28px; border-radius:8px; max-width:720px; width:100%; box-shadow:0 8px 30px rgba(0,0,0,0.25); }
+    h1{ margin:0 0 8px; font-size:28px }
+    p { margin:6px 0 18px; color:#e8eefc }
+    a.btn{ display:inline-block; padding:10px 16px; border-radius:6px; text-decoration:none; color:#fff; background:linear-gradient(135deg,#2b6df6,#7c4dff); margin-right:8px }
+    .muted{ color: #dbe6ff; font-size:13px; margin-top:12px }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Foreman Collaboration Platform</h1>
+    <p>Real-time chat, location sharing and collaboration for foremen and contractors.</p>
+
+    <div>
+      <a class="btn" href="/signup">Create Account</a>
+      <a class="btn" href="/login">Login</a>
+      <a class="btn" href="/dashboard">Open Dashboard</a>
+    </div>
+
+    <p class="muted">Tip: Use <code>/signup</code> to create an account — this will persist to the server. The interactive demo behavior has been removed.</p>
+    <p class="muted">If you're sharing on a LAN, use the network host shown when the server starts (e.g. <code>http://172.20.10.2:3000</code>).</p>
+  </div>
+</body>
+</html>

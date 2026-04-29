@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - Foreman App</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --bg-primary: #f5f7fa;
+            --bg-secondary: #ffffff;
+            --text-primary: #2c3e50;
+            --text-secondary: #7f8c8d;
+            --accent: #667eea;
+            --accent-hover: #5568d3;
+            --border: #e1e8ed;
+            --success: #27ae60;
+            --danger: #e74c3c;
+            --shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        body.dark-mode {
+            --bg-primary: #1a1a2e;
+            --bg-secondary: #16213e;
+            --text-primary: #eaeaea;
+            --text-secondary: #a0a0a0;
+            --border: #2d3748;
+            --shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+
+        body.high-contrast {
+            --bg-primary: #000000;
+            --bg-secondary: #1a1a1a;
+            --text-primary: #ffffff;
+            --text-secondary: #cccccc;
+            --accent: #00ff00;
+            --accent-hover: #00cc00;
+            --border: #ffffff;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 2px solid var(--border);
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            color: var(--text-primary);
+        }
+
+        .back-btn {
+            padding: 10px 20px;
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            text-decoration: none;
+            display: inline-block;
+            transition: background 0.2s;
+        }
+
+        .back-btn:hover {
+            background: var(--accent-hover);
+        }
+
+        .settings-section {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .settings-section h2 {
+            font-size: 20px;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group input[type="tel"],
+        .form-group input[type="password"],
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 14px;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            transition: border 0.2s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .toggle-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .toggle-group:last-child {
+            border-bottom: none;
+        }
+
+        .toggle-group label {
+            font-weight: 500;
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 26px;
+            background: var(--border);
+            border-radius: 13px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .toggle-switch.active {
+            background: var(--accent);
+        }
+
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            width: 22px;
+            height: 22px;
+            background: white;
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: left 0.3s;
+        }
+
+        .toggle-switch.active::after {
+            left: 26px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+        }
+
+        .btn-secondary {
+            background: var(--border);
+            color: var(--text-primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--text-secondary);
+            color: white;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c0392b;
+        }
+
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: var(--accent);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            font-weight: bold;
+            margin: 0 auto 20px;
+        }
+
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                overflow: auto;
+                -webkit-overflow-scrolling: touch;
+                touch-action: pan-y pan-x;
+            }
+
+            .container {
+                padding: 15px;
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .header h1 {
+                font-size: 22px;
+            }
+
+            .settings-section {
+                padding: 20px;
+            }
+
+            .btn-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>⚙️ Settings</h1>
+            <a href="/dashboard?session=<%= sessionId %>" class="back-btn">← Back to Dashboard</a>
+        </div>
+
+        <div id="successMessage" class="success-message">Settings saved successfully!</div>
+
+        <!-- Profile Settings -->
+        <div class="settings-section">
+            <h2>👤 Profile Settings</h2>
+            <div class="profile-avatar" id="avatar"><%= user.username.charAt(0).toUpperCase() %></div>
+            
+            <form id="profileForm">
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" id="username" value="<%= user.username %>" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="email" value="<%= user.email %>" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="tel" id="phone" value="<%= user.phone %>" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Role</label>
+                    <select id="category" disabled>
+                        <option value="foreman" <%= user.category === 'foreman' ? 'selected' : '' %>>Foreman</option>
+                        <option value="contractor" <%= user.category === 'contractor' ? 'selected' : '' %>>Contractor</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Location <span style="font-size: 12px; color: var(--text-secondary);">(City, State or Region)</span></label>
+                    <input type="text" id="location" value="<%= user.location || '' %>" placeholder="e.g., Los Angeles, CA">
+                </div>
+
+                <div class="form-group">
+                    <label>Bio (Optional)</label>
+                    <textarea id="bio" placeholder="Tell others about yourself..."><%= user.bio || '' %></textarea>
+                </div>
+
+                <div class="btn-group">
+                    <button type="submit" class="btn btn-primary">Save Profile</button>
+                    <button type="button" class="btn btn-secondary" onclick="resetProfile()">Reset</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Appearance Settings -->
+        <div class="settings-section">
+            <h2>🎨 Appearance</h2>
+            
+            <div class="toggle-group">
+                <label>Dark Mode</label>
+                <div class="toggle-switch" id="darkModeToggle" onclick="toggleDarkMode()"></div>
+            </div>
+
+            <div class="toggle-group">
+                <label>High Contrast Mode</label>
+                <div class="toggle-switch" id="highContrastToggle" onclick="toggleHighContrast()"></div>
+            </div>
+
+            <div class="form-group" style="margin-top: 20px;">
+                <label>Font Size</label>
+                <select id="fontSize" onchange="changeFontSize(this.value)">
+                    <option value="small">Small</option>
+                    <option value="medium" selected>Medium</option>
+                    <option value="large">Large</option>
+                    <option value="xlarge">Extra Large</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Notification Settings -->
+        <div class="settings-section">
+            <h2>🔔 Notifications</h2>
+            
+            <div class="toggle-group">
+                <label>New Message Notifications</label>
+                <div class="toggle-switch active" id="messageNotifToggle" onclick="toggleSetting(this)"></div>
+            </div>
+
+            <div class="toggle-group">
+                <label>Call Notifications</label>
+                <div class="toggle-switch active" id="callNotifToggle" onclick="toggleSetting(this)"></div>
+            </div>
+
+            <div class="toggle-group">
+                <label>Pin Drop Notifications</label>
+                <div class="toggle-switch active" id="pinNotifToggle" onclick="toggleSetting(this)"></div>
+            </div>
+
+            <div class="toggle-group">
+                <label>Sound Effects</label>
+                <div class="toggle-switch active" id="soundToggle" onclick="toggleSetting(this)"></div>
+            </div>
+        </div>
+
+        <!-- Security Settings -->
+        <div class="settings-section">
+            <h2>🔒 Security</h2>
+            
+            <form id="passwordForm">
+                <div class="form-group">
+                    <label>Current Password</label>
+                    <input type="password" id="currentPassword" placeholder="Enter current password">
+                </div>
+
+                <div class="form-group">
+                    <label>New Password</label>
+                    <input type="password" id="newPassword" placeholder="Enter new password">
+                </div>
+
+                <div class="form-group">
+                    <label>Confirm New Password</label>
+                    <input type="password" id="confirmPassword" placeholder="Confirm new password">
+                </div>
+
+                <div class="btn-group">
+                    <button type="submit" class="btn btn-primary">Change Password</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Account Actions -->
+        <div class="settings-section">
+            <h2>⚠️ Account Actions</h2>
+            
+            <div class="btn-group">
+                <button class="btn btn-secondary" onclick="logoutAccount()">Logout</button>
+                <button class="btn btn-danger" onclick="deleteAccount()">Delete Account</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const user = <%- JSON.stringify(user) %>;
+        const sessionId = '<%= sessionId %>';
+
+        // Load saved preferences
+        document.addEventListener('DOMContentLoaded', () => {
+            loadPreferences();
+        });
+
+        function loadPreferences() {
+            const darkMode = localStorage.getItem('darkMode') === 'true';
+            const highContrast = localStorage.getItem('highContrast') === 'true';
+            const fontSize = localStorage.getItem('fontSize') || 'medium';
+
+            if (darkMode) {
+                document.body.classList.add('dark-mode');
+                document.getElementById('darkModeToggle').classList.add('active');
+            }
+
+            if (highContrast) {
+                document.body.classList.add('high-contrast');
+                document.getElementById('highContrastToggle').classList.add('active');
+            }
+
+            document.getElementById('fontSize').value = fontSize;
+            changeFontSize(fontSize);
+        }
+
+        function toggleDarkMode() {
+            const toggle = document.getElementById('darkModeToggle');
+            toggle.classList.toggle('active');
+            document.body.classList.toggle('dark-mode');
+            localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+        }
+
+        function toggleHighContrast() {
+            const toggle = document.getElementById('highContrastToggle');
+            toggle.classList.toggle('active');
+            document.body.classList.toggle('high-contrast');
+            localStorage.setItem('highContrast', document.body.classList.contains('high-contrast'));
+        }
+
+        function changeFontSize(size) {
+            const sizes = { small: '12px', medium: '14px', large: '16px', xlarge: '18px' };
+            document.body.style.fontSize = sizes[size];
+            localStorage.setItem('fontSize', size);
+        }
+
+        function toggleSetting(element) {
+            element.classList.toggle('active');
+        }
+
+        // Profile Form Submit
+        document.getElementById('profileForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = {
+                username: document.getElementById('username').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                location: document.getElementById('location').value,
+                bio: document.getElementById('bio').value,
+                sessionId: sessionId
+            };
+
+            try {
+                const response = await fetch('/api/update-profile', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    showSuccessMessage();
+                    // Update avatar
+                    document.getElementById('avatar').textContent = formData.username.charAt(0).toUpperCase();
+                } else {
+                    alert('Failed to update profile: ' + (result.error || 'Unknown error'));
+                }
+            } catch (err) {
+                alert('Error updating profile: ' + err.message);
+            }
+        });
+
+        // Password Form Submit
+        document.getElementById('passwordForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const currentPassword = document.getElementById('currentPassword').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (newPassword !== confirmPassword) {
+                alert('New passwords do not match!');
+                return;
+            }
+
+            if (newPassword.length < 6) {
+                alert('Password must be at least 6 characters long!');
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/change-password', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ currentPassword, newPassword, sessionId })
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    showSuccessMessage();
+                    document.getElementById('passwordForm').reset();
+                } else {
+                    alert('Failed to change password: ' + (result.error || 'Unknown error'));
+                }
+            } catch (err) {
+                alert('Error changing password: ' + err.message);
+            }
+        });
+
+        function resetProfile() {
+            document.getElementById('username').value = user.username;
+            document.getElementById('email').value = user.email;
+            document.getElementById('phone').value = user.phone;
+            document.getElementById('location').value = user.location || '';
+            document.getElementById('bio').value = user.bio || '';
+        }
+
+        function showSuccessMessage() {
+            const msg = document.getElementById('successMessage');
+            msg.classList.add('show');
+            setTimeout(() => msg.classList.remove('show'), 3000);
+        }
+
+        function logoutAccount() {
+            if (confirm('Are you sure you want to logout?')) {
+                window.location.href = '/logout?session=' + sessionId;
+            }
+        }
+
+        function deleteAccount() {
+            if (confirm('⚠️ WARNING: This will permanently delete your account and all data. This action cannot be undone!\n\nAre you absolutely sure?')) {
+                if (confirm('Last chance! Delete your account forever?')) {
+                    fetch('/api/delete-account', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ sessionId })
+                    }).then(() => {
+                        alert('Account deleted successfully.');
+                        window.location.href = '/';
+                    });
+                }
+            }
+        }
+    </script>
+</body>
+</html>
