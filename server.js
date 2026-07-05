@@ -244,7 +244,6 @@ try {
     server = http.createServer(app);
     useHttps = false;
 }
-}
 
 const io = new SocketIO(server, {
     cors: { origin: '*' },
