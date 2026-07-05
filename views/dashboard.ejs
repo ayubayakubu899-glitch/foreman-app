@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Dashboard - Foreman Collaboration</title>
     <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
@@ -49,7 +49,7 @@
         }
 
         .header h1 {
-            font-size: 20px;
+            font-size: clamp(16px, 1.2vw, 20px);
             color: var(--text-light);
         }
 
@@ -59,6 +59,59 @@
             border-radius: 20px;
             font-size: 13px;
             font-weight: 600;
+        }
+
+        .work-status-box {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 10px;
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.03);
+            font-size: 12px;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 42px;
+            height: 22px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            inset: 0;
+            background-color: #4a5568;
+            transition: 0.2s;
+            border-radius: 999px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 3px;
+            top: 3px;
+            background-color: white;
+            transition: 0.2s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--success);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(20px);
         }
 
         .header-right {
@@ -98,15 +151,17 @@
         .main-container {
             display: flex;
             height: calc(100vh - 60px);
+            min-height: 0;
         }
 
         /* Contacts Sidebar */
         .contacts-sidebar {
-            width: 320px;
+            width: clamp(260px, 28vw, 340px);
             background: var(--bg-darker);
             border-right: 1px solid var(--border);
             display: flex;
             flex-direction: column;
+            min-width: 220px;
         }
 
         .contacts-header {
@@ -119,6 +174,7 @@
             align-items: center;
             gap: 10px;
             margin-bottom: 10px;
+            flex-wrap: wrap;
         }
 
         .add-contact-btn {
@@ -130,6 +186,30 @@
             cursor: pointer;
             font-weight: 600;
             transition: background 0.2s ease;
+        }
+
+        .create-group-btn,
+        .add-group-members-btn {
+            padding: 8px 12px;
+            background: #1f8f6f;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.2s ease;
+        }
+
+        .add-group-members-btn {
+            background: #3a5fa8;
+        }
+
+        .create-group-btn:hover {
+            background: #18785d;
+        }
+
+        .add-group-members-btn:hover {
+            background: #2e4f8f;
         }
 
         .add-contact-btn:hover {
@@ -165,6 +245,59 @@
             flex: 1;
             overflow-y: auto;
             padding: 10px;
+        }
+
+        .groups-list {
+            padding: 8px 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            max-height: 170px;
+            overflow-y: auto;
+        }
+
+        .group-empty {
+            color: var(--text-gray);
+            font-size: 12px;
+            padding: 8px 4px;
+        }
+
+        .group-item {
+            width: 100%;
+            border: 1px solid var(--border);
+            background: #172033;
+            color: var(--text-light);
+            border-radius: 8px;
+            padding: 8px 10px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .group-item.active {
+            border-color: #1f8f6f;
+            background: #1d3342;
+        }
+
+        .group-item-name {
+            font-size: 13px;
+            font-weight: 700;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .group-item-meta {
+            font-size: 11px;
+            color: var(--text-gray);
+        }
+
+        .contact-group-header {
+            font-size: 10px;
+            color: var(--text-gray);
+            letter-spacing: 0.08em;
+            margin: 8px 4px;
         }
 
         .contact-item {
@@ -253,7 +386,11 @@
             flex: 1;
             display: flex;
             flex-direction: column;
-            background: var(--bg-dark);
+            background: linear-gradient(180deg, #101427 0%, #0c111f 100%);
+            background-image: radial-gradient(circle at 10% 20%, rgba(102,126,234,0.08) 0, transparent 20%),
+                              radial-gradient(circle at 80% 15%, rgba(23,162,184,0.06) 0, transparent 24%),
+                              radial-gradient(circle at 25% 85%, rgba(255,255,255,0.04) 0, transparent 18%),
+                              radial-gradient(circle at 85% 75%, rgba(255,255,255,0.03) 0, transparent 16%);
         }
 
         .chat-header {
@@ -263,6 +400,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 10px;
         }
 
         .chat-user-info {
@@ -270,12 +408,22 @@
             align-items: center;
             gap: 12px;
             flex: 1;
+            min-width: 0;
+            overflow: hidden;
         }
 
         .chat-user-details {
             display: flex;
             flex-direction: column;
             gap: 2px;
+            min-width: 0;
+            overflow: hidden;
+        }
+
+        #chat-contact-name {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .chat-user-location {
@@ -305,6 +453,18 @@
         .chat-actions {
             display: flex;
             gap: 10px;
+            flex: 0 0 auto;
+            flex-shrink: 0;
+            margin-left: auto;
+        }
+
+        .mobile-nav-btn {
+            display: none;
+            text-decoration: none;
+        }
+
+        .mobile-bottom-nav {
+            display: none;
         }
 
         .action-btn {
@@ -316,19 +476,38 @@
             border-radius: 6px;
             cursor: pointer;
             font-size: 18px;
+            font-family: "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji", "Apple Color Emoji", sans-serif;
+            line-height: 1;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: all 0.2s;
         }
 
+        .map-btn,
+        #location-share-btn,
+        #media-btn {
+            font-family: "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji", "Apple Color Emoji", sans-serif;
+            line-height: 1.1;
+        }
+
         .action-btn:hover {
             background: var(--primary);
         }
 
+        .recording-pulse {
+            animation: recordingPulse 0.9s ease-in-out infinite;
+        }
+
+        @keyframes recordingPulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.5); }
+            70% { transform: scale(1.06); box-shadow: 0 0 0 10px rgba(231, 76, 60, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(231, 76, 60, 0); }
+        }
+
         /* Map Section in Chat */
         .map-section {
-            height: 300px;
+            height: clamp(220px, 34vh, 300px);
             border-bottom: 1px solid var(--border);
             position: relative;
         }
@@ -352,6 +531,9 @@
             right: 10px;
             display: flex;
             gap: 8px;
+            flex-wrap: wrap;
+            max-width: calc(100% - 20px);
+            justify-content: flex-end;
         }
 
         .map-btn {
@@ -371,65 +553,177 @@
 
         /* Call Area */
         .call-area {
-            margin: 12px 16px 0 16px;
-            padding: 12px;
-            background: var(--bg-darker);
-            border: 1px solid var(--border);
-            border-radius: 10px;
+            margin: 10px 12px 0 12px;
+            padding: 14px;
+            background: linear-gradient(160deg, rgba(10, 14, 28, 0.97), rgba(25, 36, 56, 0.96));
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            border-radius: 22px;
             display: none;
             flex-direction: column;
-            gap: 10px;
+            gap: 12px;
+            box-shadow: 0 18px 42px rgba(0,0,0,0.36);
         }
 
         .call-status {
-            font-size: 13px;
-            color: var(--text-gray);
+            font-size: 14px;
+            color: #f8fafc;
+            text-align: center;
+            font-weight: 700;
+            letter-spacing: 0.02em;
         }
 
         .call-videos {
             display: flex;
             gap: 10px;
+            position: relative;
         }
 
         .call-videos video {
-            width: 50%;
+            width: 100%;
             background: #000;
-            border-radius: 8px;
-            border: 1px solid var(--border);
-            max-height: 200px;
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.18);
+            max-height: 240px;
+            object-fit: cover;
+            box-shadow: 0 10px 22px rgba(0,0,0,0.25);
+        }
+
+        .call-videos video#local-video {
+            width: 32%;
+            max-width: 130px;
+            position: absolute;
+            right: 8px;
+            bottom: 8px;
+            z-index: 2;
+            border-radius: 12px;
+            border: 2px solid rgba(255,255,255,0.28);
+            max-height: 100px;
+        }
+
+        .call-action-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .call-controls {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .call-control-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-light);
+            font-size: 12px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 999px;
+            padding: 8px 12px;
+        }
+
+        .call-control-item label {
+            white-space: nowrap;
+            color: #cbd5e0;
+        }
+
+        #speaker-volume {
+            width: 120px;
+            max-width: 100%;
+            flex: 1;
         }
 
         .call-actions {
             display: flex;
-            gap: 8px;
+            gap: 10px;
+            margin-left: auto;
+        }
+
+        .end-call-btn,
+        .mute-call-btn {
+            padding: 10px 14px;
+            border: none;
+            border-radius: 999px;
+            cursor: pointer;
+            font-weight: 700;
+            letter-spacing: 0.01em;
+        }
+
+        .mute-call-btn {
+            background: rgba(59, 130, 246, 0.95);
+            color: white;
         }
 
         .end-call-btn {
-            padding: 8px 12px;
-            background: var(--danger);
+            background: rgba(239, 68, 68, 0.98);
             color: #fff;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .call-area {
+                margin: 8px 10px 0 10px;
+                padding: 12px;
+                border-radius: 18px;
+            }
+
+            .call-videos video {
+                max-height: 220px;
+            }
+
+            .call-videos video#local-video {
+                width: 34%;
+                max-width: 118px;
+                max-height: 92px;
+            }
+
+            .call-action-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .call-controls,
+            .call-actions {
+                width: 100%;
+            }
+
+            .call-actions {
+                justify-content: space-between;
+                margin-left: 0;
+            }
         }
 
         .end-call-btn:hover {
             background: #c0392b;
         }
 
+        .hangup-floating-btn { display: none !important; }
+
         /* Messages Area */
         .messages-container {
             flex: 1;
             overflow-y: auto;
-            padding: 20px;
+            padding: clamp(12px, 1.5vw, 20px);
             display: flex;
             flex-direction: column;
             gap: 12px;
+            background: linear-gradient(180deg, rgba(15, 20, 32, 0.94) 0%, rgba(9, 14, 22, 1) 100%);
+            background-image:
+                radial-gradient(circle at 15% 10%, rgba(255,255,255,0.04) 0, transparent 15%),
+                radial-gradient(circle at 85% 20%, rgba(255,255,255,0.03) 0, transparent 12%),
+                linear-gradient(90deg, rgba(255,255,255,0.015), transparent);
+            background-size: 180px 180px, 220px 220px, 100%;
+            background-position: top left, bottom right, center;
+            background-repeat: no-repeat;
+            border-radius: 18px;
+            border: 1px solid rgba(255,255,255,0.08);
         }
 
         .message {
-            max-width: 70%;
+            max-width: min(78%, 560px);
             padding: 10px 14px;
             border-radius: 12px;
             word-wrap: break-word;
@@ -461,6 +755,421 @@
             border-top: 1px solid var(--border);
             display: flex;
             gap: 10px;
+            align-items: center;
+        }
+
+        .voice-preview-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.75);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 12000;
+            padding: 16px;
+        }
+
+        .voice-preview-modal.open {
+            display: flex;
+        }
+
+        .voice-preview-card {
+            width: min(560px, 100%);
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 20px;
+            box-shadow: 0 24px 56px rgba(0, 0, 0, 0.32);
+        }
+
+        .voice-preview-card h3 {
+            margin: 0 0 14px;
+            font-size: 18px;
+        }
+
+        .voice-preview-card audio {
+            width: 100%;
+            margin-bottom: 12px;
+            border-radius: 12px;
+            background: #000;
+        }
+
+        .voice-preview-player-actions {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .voice-preview-play-btn {
+            padding: 10px 14px;
+            border-radius: 10px;
+            border: none;
+            background: var(--primary);
+            color: white;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        .voice-preview-card input {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            background: var(--bg-darker);
+            color: var(--text-light);
+            margin-bottom: 12px;
+        }
+
+        .voice-preview-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .voice-preview-actions button {
+            padding: 11px 16px;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        #voice-preview-cancel {
+            background: var(--bg-darker);
+            color: var(--text-light);
+            border: 1px solid var(--border);
+        }
+
+        #voice-preview-send {
+            background: var(--success);
+            color: white;
+        }
+
+        .voice-preview-duration {
+            color: var(--text-gray);
+            font-size: 13px;
+            margin-top: 10px;
+        }
+
+        .typing-indicator {
+            min-height: 22px;
+            padding: 0 20px 8px;
+            color: var(--text-gray);
+            font-size: 12px;
+            font-style: italic;
+        }
+
+        .reply-preview {
+            display: none;
+            margin: 8px 20px 0;
+            padding: 8px 10px;
+            border-left: 3px solid var(--primary);
+            background: rgba(102, 126, 234, 0.12);
+            border-radius: 6px;
+            font-size: 12px;
+            color: var(--text-gray);
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .reply-preview-text {
+            flex: 1;
+            min-width: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .reply-cancel-btn {
+            border: none;
+            background: transparent;
+            color: var(--text-light);
+            cursor: pointer;
+            font-size: 14px;
+            padding: 4px 6px;
+        }
+
+        .reply-quote {
+            border-left: 3px solid rgba(255,255,255,0.55);
+            background: rgba(0,0,0,0.12);
+            padding: 6px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            margin-bottom: 6px;
+            opacity: 0.9;
+        }
+
+        .location-share-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: flex-end;
+            justify-content: center;
+            z-index: 1200;
+        }
+
+        .location-share-modal.open {
+            display: flex;
+        }
+
+        .location-share-sheet {
+            width: min(540px, 100%);
+            background: var(--bg-darker);
+            border: 1px solid var(--border);
+            border-bottom: none;
+            border-radius: 18px 18px 0 0;
+            padding: 18px;
+            box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .location-share-handle {
+            width: 54px;
+            height: 5px;
+            border-radius: 999px;
+            background: #4a5568;
+            margin: 0 auto 12px;
+        }
+
+        .location-share-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+
+        .location-share-title {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .location-share-close {
+            width: 34px;
+            height: 34px;
+            border-radius: 999px;
+            border: 1px solid var(--border);
+            background: var(--bg-dark);
+            color: var(--text-light);
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .location-share-subtitle {
+            color: var(--text-gray);
+            font-size: 13px;
+            margin-bottom: 16px;
+        }
+
+        .location-duration-row {
+            display: flex;
+            gap: 8px;
+            margin: 10px 0 14px;
+            flex-wrap: wrap;
+        }
+
+        .location-duration-btn {
+            padding: 8px 12px;
+            border-radius: 999px;
+            border: 1px solid var(--border);
+            background: var(--bg-dark);
+            color: var(--text-light);
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .location-duration-btn.active {
+            border-color: var(--primary);
+            background: rgba(102, 126, 234, 0.2);
+            color: #cdd7ff;
+        }
+
+        .location-share-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: var(--bg-dark);
+            margin-bottom: 14px;
+            font-size: 13px;
+        }
+
+        .location-share-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .location-action-btn {
+            flex: 1;
+            border: none;
+            border-radius: 10px;
+            padding: 11px 12px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .location-action-now {
+            background: #1f2937;
+            color: #e5e7eb;
+            border: 1px solid var(--border);
+        }
+
+        .location-action-live {
+            background: var(--success);
+            color: #fff;
+        }
+
+        .reply-btn,
+        .delete-btn {
+            margin-top: 6px;
+            margin-right: 6px;
+            padding: 4px 8px;
+            border: none;
+            border-radius: 6px;
+            background: rgba(255,255,255,0.14);
+            color: inherit;
+            cursor: pointer;
+            font-size: 11px;
+        }
+
+        .mobile-calls-view {
+            display: none;
+            flex: 1;
+            overflow-y: auto;
+            padding: 14px;
+            background: var(--bg-dark);
+        }
+
+        .wallpaper-picker-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.68);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1300;
+            padding: 16px;
+        }
+
+        .wallpaper-picker-modal.open {
+            display: flex;
+        }
+
+        .wallpaper-picker-card {
+            width: min(560px, 100%);
+            background: var(--bg-darker);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 18px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .wallpaper-picker-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .wallpaper-option {
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 10px;
+            background: var(--bg-dark);
+            color: var(--text-light);
+            cursor: pointer;
+            text-align: left;
+        }
+
+        .wallpaper-option.active {
+            border-color: var(--primary);
+            box-shadow: inset 0 0 0 1px var(--primary);
+        }
+
+        .wallpaper-preview {
+            height: 72px;
+            border-radius: 10px;
+            margin-bottom: 8px;
+            border: 1px solid rgba(255,255,255,0.12);
+        }
+
+        .wallpaper-picker-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .wallpaper-picker-actions button {
+            padding: 8px 12px;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        .wallpaper-picker-actions .secondary {
+            background: var(--bg-dark);
+            color: var(--text-light);
+            border: 1px solid var(--border);
+        }
+
+        .wallpaper-picker-actions .primary {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        .mobile-calls-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .mobile-calls-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .mobile-call-item {
+            border: 1px solid var(--border);
+            background: var(--bg-darker);
+            border-radius: 10px;
+            padding: 10px 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .mobile-call-item:hover {
+            border-color: var(--primary);
+        }
+
+        .mobile-call-main {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            min-width: 0;
+        }
+
+        .mobile-call-name {
+            font-size: 13px;
+            font-weight: 700;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .mobile-call-meta {
+            font-size: 11px;
+            color: var(--text-gray);
         }
 
         #chat-input {
@@ -468,9 +1177,189 @@
             padding: 12px;
             background: var(--bg-dark);
             border: 1px solid var(--border);
-            border-radius: 6px;
+            border-radius: 999px;
             color: var(--text-light);
             font-size: 14px;
+        }
+
+        .chat-composer-actions {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .chat-plus-btn {
+            width: 42px;
+            height: 42px;
+            border-radius: 999px;
+            border: none;
+            background: var(--primary);
+            color: #fff;
+            font-size: 24px;
+            line-height: 1;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 18px rgba(0,0,0,0.22);
+        }
+
+        .chat-plus-menu {
+            position: absolute;
+            bottom: 48px;
+            left: 0;
+            display: none;
+            flex-direction: column;
+            gap: 8px;
+            min-width: 178px;
+            padding: 10px;
+            background: rgba(14, 22, 34, 0.98);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            box-shadow: 0 16px 36px rgba(0,0,0,0.34);
+            z-index: 1300;
+        }
+
+        .chat-plus-menu.open {
+            display: flex;
+        }
+
+        .chat-plus-item {
+            border: none;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.06);
+            color: #fff;
+            padding: 10px 12px;
+            text-align: left;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .chat-plus-item:hover {
+            background: rgba(102,126,234,0.25);
+        }
+
+        .hidden-chat-action {
+            display: none !important;
+        }
+
+        #voice-note-btn.voice-note-visible {
+            display: inline-flex !important;
+            width: 42px;
+            height: 42px;
+            border-radius: 999px;
+            border: none;
+            background: #e74c3c;
+            color: #fff;
+            font-size: 19px;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.22);
+        }
+
+        #voice-note-btn.voice-note-visible:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+        }
+
+        .voice-recording-panel {
+            display: none;
+            margin: 0 20px 10px;
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: var(--bg-darker);
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .voice-recording-panel.open {
+            display: flex;
+        }
+
+        .voice-recording-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-light);
+            font-size: 12px;
+        }
+
+        .voice-recording-timer {
+            font-weight: 700;
+            color: #ff8b84;
+        }
+
+        .voice-recording-progress {
+            width: 100%;
+            height: 6px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.12);
+            overflow: hidden;
+        }
+
+        .voice-recording-progress-fill {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, #e74c3c, #ffb347);
+            transition: width 0.2s linear;
+        }
+
+        .voice-recording-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .voice-recording-btn {
+            border: none;
+            border-radius: 10px;
+            padding: 8px 10px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .voice-recording-btn.pause {
+            background: #f39c12;
+            color: #111;
+        }
+
+        .voice-recording-btn.send {
+            background: #27ae60;
+            color: #fff;
+        }
+
+        .voice-recording-btn.cancel {
+            background: rgba(255,255,255,0.14);
+            color: #fff;
+        }
+
+        .voice-mode-switch {
+            margin-left: auto;
+            display: inline-flex;
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            overflow: hidden;
+        }
+
+        .voice-mode-switch button {
+            border: none;
+            background: transparent;
+            color: var(--text-gray);
+            font-size: 11px;
+            font-weight: 700;
+            padding: 6px 9px;
+            cursor: pointer;
+        }
+
+        .voice-mode-switch button.active {
+            background: rgba(102,126,234,0.32);
+            color: #fff;
         }
 
         #chat-input:focus {
@@ -479,13 +1368,18 @@
         }
 
         #send-btn {
-            padding: 12px 24px;
+            width: 42px;
+            height: 42px;
             background: var(--primary);
             color: white;
             border: none;
-            border-radius: 6px;
+            border-radius: 999px;
             cursor: pointer;
-            font-weight: 600;
+            font-weight: 700;
+            font-size: 20px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
         }
 
         #send-btn:hover {
@@ -509,43 +1403,132 @@
 
         /* Mobile Responsive */
         @media (max-width: 768px) {
+            html,
             body {
-                overflow: auto;
+                height: 100dvh;
+            }
+
+            body {
+                overflow: hidden;
                 -webkit-overflow-scrolling: touch;
                 touch-action: pan-y pan-x;
             }
 
+            .header {
+                padding: 10px 12px;
+            }
+
+            .header-left {
+                gap: 8px;
+                min-width: 0;
+            }
+
+            .header h1 {
+                font-size: 15px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .work-status-box {
+                padding: 4px 8px;
+                font-size: 11px;
+                gap: 6px;
+            }
+
+            .user-badge {
+                display: none;
+            }
+
+            .header-right .btn {
+                padding: 7px 10px;
+                font-size: 12px;
+            }
+
             .main-container {
-                flex-direction: column;
-                height: auto;
-                min-height: calc(100vh - 60px);
-                overflow: visible;
+                position: relative;
+                height: calc(100vh - 56px - 62px);
+                min-height: 0;
+                overflow: hidden;
             }
 
             .contacts-sidebar {
                 width: 100%;
-                max-height: 40vh;
-                position: relative;
+                max-height: none;
+                position: absolute;
+                inset: 0;
                 border-right: none;
-                border-bottom: 1px solid var(--border);
+                border-bottom: none;
                 overflow-y: auto;
                 -webkit-overflow-scrolling: touch;
             }
 
             .chat-panel {
                 width: 100%;
-                min-height: 60vh;
-                overflow: visible;
+                min-height: 0;
+                position: absolute;
+                inset: 0;
+                overflow: hidden;
+                display: none;
+            }
+
+            body.mobile-chat-open .contacts-sidebar {
+                display: none;
+            }
+
+            body.mobile-chat-open .chat-panel {
+                display: flex;
+            }
+
+            body.mobile-calls-open .contacts-sidebar {
+                display: none;
+            }
+
+            body.mobile-calls-open .chat-panel {
+                display: flex;
+            }
+
+            body.mobile-calls-open .messages-container,
+            body.mobile-calls-open .typing-indicator,
+            body.mobile-calls-open .chat-input-area,
+            body.mobile-calls-open .map-section {
+                display: none !important;
+            }
+
+            body.mobile-calls-open.call-active .call-area {
+                display: block !important;
+            }
+
+            body.mobile-calls-open:not(.call-active) .call-area {
+                display: none !important;
+            }
+
+            body.mobile-calls-open .mobile-calls-view {
+                display: block;
             }
 
             .map-section {
-                height: 250px;
+                height: 200px;
+            }
+
+            .map-controls {
+                left: 10px;
+                right: 10px;
+                bottom: 8px;
+                justify-content: flex-start;
+                gap: 6px;
+            }
+
+            .map-controls #map-search-input {
+                flex: 1 1 100%;
+                min-width: 0 !important;
             }
 
             .messages-container {
-                max-height: 50vh;
+                max-height: none;
                 overflow-y: auto;
                 -webkit-overflow-scrolling: touch;
+                padding: 12px;
             }
 
             .message {
@@ -554,6 +1537,126 @@
 
             .contacts-list {
                 -webkit-overflow-scrolling: touch;
+                padding-bottom: 70px;
+            }
+
+            .groups-list {
+                max-height: 140px;
+            }
+
+            .contacts-actions {
+                gap: 8px;
+            }
+
+            .add-contact-btn,
+            .create-group-btn,
+            .add-group-members-btn {
+                font-size: 12px;
+                padding: 8px 10px;
+            }
+
+            .search-box,
+            #chat-input,
+            #send-btn,
+            .chat-input-area button,
+            .map-btn,
+            .location-duration-btn,
+            .location-action-btn {
+                font-size: 16px;
+            }
+
+            .chat-header {
+                padding: 10px 12px;
+            }
+
+            .chat-actions {
+                gap: 6px;
+            }
+
+            .action-btn {
+                width: 34px;
+                height: 34px;
+                font-size: 16px;
+            }
+
+            .chat-input-area {
+                padding: 10px 12px;
+                gap: 8px;
+            }
+
+            .chat-panel {
+                padding-bottom: 0;
+                position: relative;
+                padding-bottom: calc(62px + env(safe-area-inset-bottom, 0px));
+            }
+
+            .chat-input-area {
+                position: sticky;
+                bottom: calc(62px + env(safe-area-inset-bottom, 0px));
+                z-index: 1000;
+                padding: 10px 12px;
+                background: var(--bg-darker);
+                border-top: 1px solid var(--border);
+                flex-wrap: nowrap;
+                padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+            }
+
+            .voice-recording-panel {
+                margin: 0 12px 8px;
+            }
+
+            .messages-container {
+                margin-bottom: 0;
+            }
+
+            .typing-indicator {
+                margin-bottom: 0;
+            }
+
+            .mobile-nav-btn {
+                display: inline-flex;
+            }
+
+            .profile-btn {
+                display: none !important;
+            }
+
+            .mobile-bottom-nav {
+                position: fixed;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                height: 62px;
+                display: grid !important;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 0;
+                background: var(--bg-darker);
+                border-top: 1px solid var(--border);
+                z-index: 3000;
+                padding-bottom: env(safe-area-inset-bottom, 0px);
+            }
+
+            .mobile-tab-btn {
+                border: none;
+                background: transparent;
+                color: var(--text-gray);
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 2px;
+                font-size: 11px;
+                cursor: pointer;
+            }
+
+            .mobile-tab-btn span:first-child {
+                font-size: 18px;
+                line-height: 1;
+            }
+
+            .mobile-tab-btn.active {
+                color: var(--text-light);
+                background: rgba(102, 126, 234, 0.15);
             }
         }
 
@@ -852,10 +1955,45 @@
         <div class="header-left">
             <h1>🏗️ Foreman Collaboration</h1>
             <span class="user-badge"><%= user.username %> • <%= user.category %></span>
+            <div class="work-status-box" id="work-status-box">
+                <span id="work-status-label">Status</span>
+                <label class="switch">
+                    <input type="checkbox" id="work-status-toggle">
+                    <span class="slider"></span>
+                </label>
+                <span id="work-status-text">Off</span>
+            </div>
         </div>
         <div class="header-right">
             <a href="/settings?session=<%= sessionId %>" class="btn btn-settings">⚙️ Settings</a>
             <a href="/logout?session=<%= sessionId %>" class="btn btn-logout">Logout</a>
+        </div>
+    </div>
+
+    <div class="location-share-modal" id="location-share-modal">
+        <div class="location-share-sheet" role="dialog" aria-modal="true" aria-labelledby="location-share-title">
+            <div class="location-share-handle"></div>
+            <div class="location-share-header">
+                <div class="location-share-title" id="location-share-title">Share location</div>
+                <button class="location-share-close" id="location-share-close-btn" type="button">✕</button>
+            </div>
+            <div class="location-share-subtitle" id="location-share-subtitle">Choose how you want to share your location.</div>
+
+            <div class="location-duration-row" id="location-duration-row">
+                <button type="button" class="location-duration-btn active" data-minutes="15">15 min</button>
+                <button type="button" class="location-duration-btn" data-minutes="60">1 hour</button>
+                <button type="button" class="location-duration-btn" data-minutes="480">8 hours</button>
+            </div>
+
+            <label class="location-share-toggle" for="location-precise-toggle">
+                <span>Share precise location</span>
+                <input id="location-precise-toggle" type="checkbox" checked />
+            </label>
+
+            <div class="location-share-actions">
+                <button type="button" class="location-action-btn location-action-now" id="location-share-now-btn">Share Now</button>
+                <button type="button" class="location-action-btn location-action-live" id="location-share-live-btn">Share Live</button>
+            </div>
         </div>
     </div>
 
@@ -867,9 +2005,14 @@
                 <h2>📞 Contacts (<span id="user-count">0</span>)</h2>
                 <div class="contacts-actions">
                     <button class="add-contact-btn" id="add-contact-btn">+ Add Contact</button>
+                    <button class="create-group-btn" id="create-group-btn">+ Create Group</button>
+                    <button class="add-group-members-btn" id="add-group-members-btn">+ Add Members</button>
                     <span class="contact-hint">All registered users appear below.</span>
                 </div>
-                <input type="text" class="search-box" id="search-contacts" placeholder="Search contacts...">
+                <input type="text" class="search-box" id="search-contacts" placeholder="Search by name, role, location (e.g. Abuja)...">
+            </div>
+            <div class="groups-list" id="groups-list">
+                <div class="group-empty">No groups yet</div>
             </div>
             <div class="contacts-list" id="contacts-list">
                 <div class="empty-state">
@@ -895,6 +2038,9 @@
                     <button class="profile-btn" id="view-profile-btn" style="display: none;">View Profile</button>
                 </div>
                 <div class="chat-actions">
+                    <button class="action-btn mobile-nav-btn" id="mobile-back-btn" title="Back to contacts">←</button>
+                    <a href="/dashboard?session=<%= sessionId %>" class="action-btn mobile-nav-btn" id="mobile-home-btn" title="Home">⌂</a>
+                    <button class="action-btn" id="wallpaper-btn" title="Change wallpaper">🖼️</button>
                     <button class="action-btn" id="call-btn" title="Voice Call">📞</button>
                     <button class="action-btn" id="video-btn" title="Video Call">📹</button>
                     <button class="action-btn" id="toggle-map-btn" title="Toggle Map">🗺️</button>
@@ -907,22 +2053,84 @@
                     <p id="map-loading">Loading Google Earth...</p>
                 </div>
                 <div class="map-controls">
+                    <input id="map-search-input" list="nigeria-area-suggestions" type="text" placeholder="Search area (city, street, landmark)" style="flex: 1; min-width: 180px; padding: 10px 12px; border-radius: 8px; border: 1px solid #d0d0d0;" />
+                    <datalist id="nigeria-area-suggestions">
+                        <option value="Lagos"></option>
+                        <option value="Ikeja Lagos"></option>
+                        <option value="Lekki Lagos"></option>
+                        <option value="Ajah Lagos"></option>
+                        <option value="Abuja"></option>
+                        <option value="Wuse Abuja"></option>
+                        <option value="Gwarinpa Abuja"></option>
+                        <option value="Maitama Abuja"></option>
+                        <option value="Port Harcourt Rivers"></option>
+                        <option value="Rumuola Port Harcourt"></option>
+                        <option value="Kano"></option>
+                        <option value="Sabon Gari Kano"></option>
+                        <option value="Kaduna"></option>
+                        <option value="Ibadan Oyo"></option>
+                        <option value="Abeokuta Ogun"></option>
+                        <option value="Sango Ota Ogun"></option>
+                        <option value="Ilorin Kwara"></option>
+                        <option value="Jos Plateau"></option>
+                        <option value="Benin City Edo"></option>
+                        <option value="Warri Delta"></option>
+                        <option value="Asaba Delta"></option>
+                        <option value="Owerri Imo"></option>
+                        <option value="Aba Abia"></option>
+                        <option value="Uyo Akwa Ibom"></option>
+                        <option value="Calabar Cross River"></option>
+                        <option value="Enugu"></option>
+                        <option value="Awka Anambra"></option>
+                        <option value="Onitsha Anambra"></option>
+                        <option value="Nnewi Anambra"></option>
+                        <option value="Makurdi Benue"></option>
+                        <option value="Yola Adamawa"></option>
+                        <option value="Bauchi"></option>
+                        <option value="Gombe"></option>
+                        <option value="Maiduguri Borno"></option>
+                        <option value="Sokoto"></option>
+                        <option value="Birnin Kebbi"></option>
+                        <option value="Katsina"></option>
+                        <option value="Dutse Jigawa"></option>
+                        <option value="Lafia Nasarawa"></option>
+                        <option value="Minna Niger"></option>
+                        <option value="Akure Ondo"></option>
+                        <option value="Ado Ekiti"></option>
+                        <option value="Osogbo Osun"></option>
+                        <option value="Yenagoa Bayelsa"></option>
+                        <option value="Lokoja Kogi"></option>
+                    </datalist>
+                    <button class="map-btn" id="map-search-btn">🔎 Search Area</button>
                     <button class="map-btn" id="drop-pin-btn">📍 Drop Pin</button>
                     <button class="map-btn" id="share-location-btn">📡 Share Location</button>
+                    <button class="map-btn" id="share-pin-chat-btn">💬 Share Pin to Chat</button>
                 </div>
             </div>
 
             <!-- Call Area -->
             <div class="call-area" id="call-area">
-                <div class="call-status" id="call-status">Connecting...</div>
+                <div class="call-status" id="call-status">Connecting... <span id="call-duration">00:00</span></div>
                 <div class="call-videos">
                     <video id="local-video" autoplay muted playsinline></video>
                     <video id="remote-video" autoplay playsinline></video>
+                    <audio id="remote-audio" autoplay playsinline style="position:absolute; width:1px; height:1px; opacity:0; pointer-events:none; left:-9999px;"></audio>
                 </div>
-                <div class="call-actions">
-                    <button class="end-call-btn" id="end-call-btn">Hang Up</button>
+                <div class="call-action-row">
+                    <div class="call-controls">
+                        <button class="mute-call-btn" id="mute-call-btn">Mute mic</button>
+                        <div class="call-control-item">
+                            <label for="speaker-volume">Speaker</label>
+                            <input type="range" id="speaker-volume" min="0" max="1" step="0.05" value="1">
+                            <span id="speaker-volume-value">100%</span>
+                        </div>
+                    </div>
+                    <div class="call-actions">
+                        <button class="end-call-btn" id="end-call-btn">Hang Up</button>
+                    </div>
                 </div>
             </div>
+            <button id="hangup-floating-btn" class="hangup-floating-btn" style="display:none;">❌</button>
 
             <!-- Messages -->
             <div class="messages-container" id="messages-container">
@@ -932,16 +2140,130 @@
                 </div>
             </div>
 
+            <div class="typing-indicator" id="typing-indicator"></div>
+
+            <div class="reply-preview" id="reply-preview">
+                <div class="reply-preview-text" id="reply-preview-text"></div>
+                <button class="reply-cancel-btn" id="reply-cancel-btn" title="Cancel reply">✕</button>
+            </div>
+
+            <div class="voice-recording-panel" id="voice-recording-panel">
+                <div class="voice-recording-top">
+                    <span id="voice-recording-state">Recording...</span>
+                    <span class="voice-recording-timer" id="voice-recording-timer">00:00</span>
+                </div>
+                <div class="voice-recording-progress" aria-hidden="true">
+                    <div class="voice-recording-progress-fill" id="voice-recording-progress-fill"></div>
+                </div>
+                <div class="voice-recording-controls">
+                    <button type="button" id="voice-record-pause-btn" class="voice-recording-btn pause">Pause</button>
+                    <button type="button" id="voice-record-send-btn" class="voice-recording-btn send">Send</button>
+                    <button type="button" id="voice-record-cancel-btn" class="voice-recording-btn cancel">Cancel</button>
+                    <div class="voice-mode-switch" role="group" aria-label="Voice recording mode">
+                        <button type="button" id="voice-mode-hold" class="active">Hold</button>
+                        <button type="button" id="voice-mode-tap">Tap</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mobile-calls-view" id="mobile-calls-view">
+                <div class="mobile-calls-title">Recent Calls</div>
+                <div class="mobile-calls-list" id="mobile-calls-list">
+                    <div class="empty-state" style="min-height: 30vh;">
+                        <div class="empty-state-icon">📞</div>
+                        <p>No recent calls yet</p>
+                    </div>
+                </div>
+            </div>
+
             <!-- Chat Input -->
             <div class="chat-input-area">
+                <div class="chat-composer-actions">
+                    <button id="chat-plus-btn" class="chat-plus-btn" type="button" title="More options">+</button>
+                    <div id="chat-plus-menu" class="chat-plus-menu">
+                        <button type="button" id="plus-document-btn" class="chat-plus-item">📄 Document</button>
+                        <button type="button" id="plus-media-btn" class="chat-plus-item">🖼️ Media</button>
+                        <button type="button" id="plus-location-btn" class="chat-plus-item">📍 Location</button>
+                        <button type="button" id="plus-voice-btn" class="chat-plus-item">🎤 Voice Note</button>
+                    </div>
+                </div>
                 <input type="text" id="chat-input" placeholder="Select a contact to chat..." disabled />
-                <input type="file" id="media-input" accept="image/*,video/*" style="display: none;" />
-                <button id="location-share-btn" title="Share Location in Chat" style="padding: 12px 16px; background: var(--success); color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 16px;" disabled>📍</button>
-                <button id="media-btn" title="Share Image/Video" style="padding: 12px 16px; background: var(--primary); color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 16px;" disabled>📎</button>
-                <button id="send-btn" disabled>Send</button>
+                <input type="file" id="media-input" accept="image/*,video/*,audio/*" style="display: none;" />
+                <input type="file" id="document-input" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.zip,.rar,.csv" style="display: none;" />
+                <button id="location-share-btn" class="hidden-chat-action" title="Share Location in Chat" disabled>📍</button>
+                <button id="media-btn" class="hidden-chat-action" title="Share Image/Video" disabled>📎</button>
+                <button id="voice-note-btn" class="voice-note-visible" title="Record Voice Note" disabled>🎤</button>
+                <button id="send-btn" disabled title="Send">➤</button>
+            </div>
+
+            <div class="voice-preview-modal" id="voice-preview-modal">
+                <div class="voice-preview-card">
+                    <h3>Review Voice Note</h3>
+                    <audio controls preload="metadata" id="voice-preview-player"></audio>
+                    <div class="voice-preview-player-actions">
+                        <button id="voice-preview-play" class="voice-preview-play-btn" type="button">Play</button>
+                        <span id="voice-preview-play-state" style="color: var(--text-gray); font-size: 13px;">Ready to play</span>
+                    </div>
+                    <input type="text" id="voice-preview-caption" placeholder="Add a caption (optional)" />
+                    <div class="voice-preview-actions">
+                        <button id="voice-preview-cancel" type="button">Cancel</button>
+                        <button id="voice-preview-send" type="button">Send</button>
+                    </div>
+                    <p class="voice-preview-duration" id="voice-preview-duration"></p>
+                </div>
             </div>
         </div>
     </div>
+
+    <div class="wallpaper-picker-modal" id="wallpaper-picker-modal">
+        <div class="wallpaper-picker-card" role="dialog" aria-modal="true" aria-labelledby="wallpaper-picker-title">
+            <h3 id="wallpaper-picker-title">Choose wallpaper</h3>
+            <p style="color: var(--text-gray); margin-top: 6px; font-size: 13px;">Pick a soft background for chat, or upload your own image.</p>
+            <div class="wallpaper-picker-grid">
+                <button type="button" class="wallpaper-option active" data-wallpaper="default">
+                    <div class="wallpaper-preview" style="background: radial-gradient(circle at 20% 20%, rgba(102,126,234,0.18), transparent 24%), radial-gradient(circle at 80% 40%, rgba(23,162,184,0.16), transparent 26%), linear-gradient(135deg, #0f172a, #111827);"></div>
+                    <strong>Default</strong>
+                </button>
+                <button type="button" class="wallpaper-option" data-wallpaper="sunset">
+                    <div class="wallpaper-preview" style="background: radial-gradient(circle at 30% 30%, rgba(255,107,107,0.22), transparent 24%), radial-gradient(circle at 70% 70%, rgba(255,195,0,0.18), transparent 24%), linear-gradient(135deg, #24113a, #1d3b57);"></div>
+                    <strong>Sunset</strong>
+                </button>
+                <button type="button" class="wallpaper-option" data-wallpaper="forest">
+                    <div class="wallpaper-preview" style="background: radial-gradient(circle at 20% 20%, rgba(46,204,113,0.18), transparent 24%), radial-gradient(circle at 82% 24%, rgba(255,255,255,0.12), transparent 24%), linear-gradient(135deg, #11251b, #163224);"></div>
+                    <strong>Forest</strong>
+                </button>
+                <button type="button" class="wallpaper-option" data-wallpaper="custom">
+                    <div class="wallpaper-preview" style="background: linear-gradient(135deg, #111827, #1f2937);"></div>
+                    <strong>Custom image</strong>
+                </button>
+            </div>
+            <div class="wallpaper-picker-actions">
+                <button type="button" class="secondary" id="wallpaper-cancel-btn">Cancel</button>
+                <button type="button" class="primary" id="wallpaper-upload-btn">Upload image</button>
+            </div>
+        </div>
+    </div>
+
+    <input type="file" id="wallpaper-input" accept="image/*" style="display:none;" />
+
+    <nav class="mobile-bottom-nav" id="mobile-bottom-nav">
+        <button class="mobile-tab-btn active" id="mobile-tab-contacts">
+            <span>👥</span>
+            <span>Contacts</span>
+        </button>
+        <button class="mobile-tab-btn" id="mobile-tab-chat">
+            <span>💬</span>
+            <span>Chat</span>
+        </button>
+        <button class="mobile-tab-btn" id="mobile-tab-calls">
+            <span>📞</span>
+            <span>Calls</span>
+        </button>
+        <button class="mobile-tab-btn" id="mobile-tab-profile">
+            <span>👤</span>
+            <span>Profile</span>
+        </button>
+    </nav>
 
     <!-- Profile Modal -->
     <div class="profile-modal" id="profile-modal">
@@ -1164,11 +2486,14 @@
         const user = {
             username: '<%= user.username %>',
             category: '<%= user.category %>',
-            dbId: '<%= user.id %>'
+            dbId: '<%= user.id %>',
+            location: '<%= user.location || "" %>',
+            isAvailableForJob: <%= user.isAvailableForJob ? 'true' : 'false' %>,
+            needsForeman: <%= user.needsForeman ? 'true' : 'false' %>
         };
         const googleEarthApiKey = '<%= googleEarthApiKey %>';
     </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=<%= googleEarthApiKey || 'AIzaSyDummy' %>&callback=initMap" async defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=<%= googleEarthApiKey || 'AIzaSyDummy' %>&libraries=places&callback=initMap" async defer></script>
     <script src="/js/main.js?v=<%= Date.now() %>"></script>
 </body>
 </html>

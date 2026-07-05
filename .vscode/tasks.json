@@ -1,0 +1,25 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Start Foreman App",
+			"type": "shell",
+			"command": "npm",
+			"args": [
+				"start"
+			],
+			"isBackground": true,
+			"group": "build"
+		},
+		{
+			"label": "Start Foreman App",
+			"type": "shell",
+			"command": "npm.cmd",
+			"args": [
+				"start"
+			],
+			"isBackground": true,
+			"group": "build"
+		}
+	]
+}

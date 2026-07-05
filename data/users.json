@@ -1,42 +1,62 @@
 [
   {
-    "id": "1765230190591",
+    "id": "5e344c8a487118c6",
     "username": "donyaks",
     "email": "ayubayakubu99@gmail.com",
-    "phone": "+2348083379845",
-    "password": "Yaksboy1",
+    "phone": "08083379845",
+    "password": "$2b$10$ZVM3UA84E6Y6UsiLFeBxluE/sOZe9jn0SMJxwez9L8ZhN4/TtoS4G",
     "category": "contractor",
-    "createdAt": "2025-12-08T21:43:10.592Z"
+    "location": "abuja",
+    "isAvailableForJob": false,
+    "needsForeman": false,
+    "createdAt": "2026-06-29T19:20:23.103Z"
   },
   {
-    "id": "1765290742531",
+    "id": "c866714fb199d369",
     "username": "Yaks",
-    "email": "ayubayakubu899@gmail.com",
-    "phone": "+2348143857866",
-    "password": "Yaksboy1",
-    "category": "foreman",
-    "createdAt": "2025-12-09T14:32:22.531Z",
-    "location": "Abuja",
-    "bio": ""
-  },
-  {
-    "id": "1765347112080",
-    "username": "Myself",
     "email": "ayubayakubu990@gmail.com",
-    "phone": "08118786062",
-    "password": "Yaksboy1",
+    "phone": "08143857866",
+    "password": "$2b$10$dr.ZPDI.AMkngUzMcTV3te7qdLXHMW3qrgrZ5bNnRlVJPfUqqbTYi",
     "category": "foreman",
-    "location": "Lagos",
-    "createdAt": "2025-12-10T06:11:52.080Z"
+    "location": "Abuja",
+    "isAvailableForJob": true,
+    "needsForeman": false,
+    "createdAt": "2026-07-01T00:31:04.944Z"
   },
   {
-    "id": "1765366007371",
-    "username": "cous",
-    "email": "ammarlut@gmail.com",
-    "phone": "+234-7063066069",
-    "password": "Ammarlut",
+    "id": "c1e1c328d0b332e1",
+    "username": "testcall1",
+    "email": "testcall1@example.com",
+    "phone": "08000000001",
+    "password": "$2b$10$0CXa2Ft/7UdWhV3WdtvZWu2ot6NvmcYV9h2o8MXrYFAsIQiZKMrIK",
     "category": "contractor",
-    "location": null,
-    "createdAt": "2025-12-10T11:26:47.371Z"
+    "location": "Abuja",
+    "isAvailableForJob": false,
+    "needsForeman": false,
+    "createdAt": "2026-07-05T13:06:33.959Z"
+  },
+  {
+    "id": "d781cbcbf011b241",
+    "username": "testcall2",
+    "email": "testcall2@example.com",
+    "phone": "08000000002",
+    "password": "$2b$10$PKwRf.xInjfRGBmRkpmZS.5xlh9QJz0gr17RQDrC.EJCXAtpUX8DG",
+    "category": "contractor",
+    "location": "Abuja",
+    "isAvailableForJob": false,
+    "needsForeman": false,
+    "createdAt": "2026-07-05T13:06:53.147Z"
+  },
+  {
+    "id": "8c1c77a1da288e31",
+    "username": "Yaqs",
+    "email": "ayubayakubu899@gmail.com",
+    "phone": "08118786062",
+    "password": "$2b$10$oBXxD2zF5jcUuMeKGnEwZO8RvqGTur59gGEvAqHJSA4TXFBuAKIYq",
+    "category": "foreman",
+    "location": "Abuja",
+    "isAvailableForJob": false,
+    "needsForeman": false,
+    "createdAt": "2026-07-05T13:24:38.584Z"
   }
 ]
