@@ -195,25 +195,55 @@ app.post('/api/reviews', (req, res) => { const { foremanId, rating, comment, ses
 // Socket.io + pins
 let useHttps = false;
 let server;
+
+const runningOnRender = !!process.env.RENDER;
+
 try {
-    const certPath = path.join(APP_ROOT, 'cert.pem');
-    const keyPath = path.join(APP_ROOT, 'key.pem');
-    const pfxPath = path.join(APP_ROOT, 'server-cert.pfx');
-    if (process.env.HTTPS !== 'false' && fs.existsSync(certPath) && fs.existsSync(keyPath)) {
-        server = https.createServer({ key: fs.readFileSync(keyPath), cert: fs.readFileSync(certPath) }, app);
-        useHttps = true;
-    } else if (fs.existsSync(pfxPath) && process.env.HTTPS !== 'false') {
-        const pfx = fs.readFileSync(pfxPath);
-        const pass = process.env.PFX_PASSPHRASE || '';
-        server = https.createServer({ pfx, passphrase: pass }, app);
-        useHttps = true;
-    } else {
+    if (runningOnRender) {
+        console.log("Running on Render - using HTTP");
         server = http.createServer(app);
+    } else {
+        const certPath = path.join(APP_ROOT, "cert.pem");
+        const keyPath = path.join(APP_ROOT, "key.pem");
+        const pfxPath = path.join(APP_ROOT, "server-cert.pfx");
+
+        if (process.env.HTTPS !== "false" &&
+            fs.existsSync(certPath) &&
+            fs.existsSync(keyPath)) {
+
+            server = https.createServer(
+                {
+                    key: fs.readFileSync(keyPath),
+                    cert: fs.readFileSync(certPath)
+                },
+                app
+            );
+            useHttps = true;
+
+        } else if (
+            process.env.HTTPS !== "false" &&
+            fs.existsSync(pfxPath)
+        ) {
+
+            server = https.createServer(
+                {
+                    pfx: fs.readFileSync(pfxPath),
+                    passphrase: process.env.PFX_PASSPHRASE || ""
+                },
+                app
+            );
+            useHttps = true;
+
+        } else {
+            server = http.createServer(app);
+        }
     }
-} catch (e) {
-    console.warn('HTTPS init failed — falling back to HTTP:', e && e.message ? e.message : e);
+
+} catch (err) {
+    console.warn("HTTPS initialization failed:", err.message);
     server = http.createServer(app);
     useHttps = false;
+}
 }
 
 const io = new SocketIO(server, {
